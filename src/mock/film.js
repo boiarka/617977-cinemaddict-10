@@ -56,7 +56,7 @@ const filmDuration = [
   `2h 10m`,
   `45m`,
   `3h`
-]
+];
 
 const getRandomIntegerNumber = (min, max) => {
   return min + Math.floor(max * Math.random());

@@ -1,6 +1,5 @@
 const FILM_COUNT = 25;
 const FILM_COUNT_START = 5;
-const EXTRA_FILM_COUNT = 2;
 
 import {filmSectionTemplate} from './components/film-section.js';
 import {topRatedTemplate} from './components/top-rated.js';
@@ -10,7 +9,7 @@ import {headerProfileTemplate} from './components/profile.js';
 import {navTemplate} from './components/navigation.js';
 import {sortTemplate} from './components/sort.js';
 import {popupTemplate} from './components/popup.js';
-import {generateFilm, generateFilms} from './mock/film.js';
+import {generateFilms} from './mock/film.js';
 import {getUserRank} from './mock/user.js';
 import {generatePopupInfo} from './mock/popup.js';
 
@@ -37,7 +36,6 @@ const filmListElement = mainElement.querySelector(`.films-list__container`);
 const filmsElement = mainElement.querySelector(`.films`);
 const allFilms = generateFilms(FILM_COUNT);
 
-console.log(allFilms);
 
 let showingFilmsCount = FILM_COUNT_START;
 allFilms.slice(0, showingFilmsCount).forEach((item) => {

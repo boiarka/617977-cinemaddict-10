@@ -4,7 +4,6 @@ export const popupTemplate = (popup) => {
     name,
     originalName,
     raiting,
-    userRate,
     producer,
     screenwriters,
     cast,
@@ -69,9 +68,8 @@ export const popupTemplate = (popup) => {
 						<tr class="film-details__row">
 							<td class="film-details__term">Genres</td>
 							<td class="film-details__cell">
-								<span class="film-details__genre">Drama</span>
-								<span class="film-details__genre">Film-Noir</span>
-								<span class="film-details__genre">Mystery</span></td>
+								<span class="film-details__genre">${genre}</span>
+								</td>
 						</tr>
 					</table>
 
