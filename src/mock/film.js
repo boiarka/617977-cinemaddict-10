@@ -95,7 +95,15 @@ const generateFilm = () => {
     genre: getRandomArrayItem(filmGenre),
     rating: getRandomRatingNumber(0, 10),
     year: getRandomDate(new Date(1960, 0, 1), new Date()).getFullYear(),
-    duration: getRandomArrayItem(filmDuration)
+    duration: getRandomArrayItem(filmDuration),
+    originalName: `Lord of the Rings: The Fellowship of the Ring`,
+    userRate: `9.5`,
+    producer: `Питер Джексон`,
+    screenwriters: `Питер Джексон, Фрэн Уолш, Филиппа Бойенс`,
+    cast: `Элайджа Вуд, Вигго Мортенсен, Шон Эстин, Иэн Маккеллен`,
+    dateAndYear: `2002г`,
+    country: `США`,
+    ageRating: `16+`
   };
 };
 
@@ -110,5 +118,3 @@ export {
   generateFilm,
   generateFilms
 };
-
-

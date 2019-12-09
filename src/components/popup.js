@@ -1,9 +1,13 @@
-export const popupTemplate = (popup) => {
+import {
+  createElement
+} from "../util.js";
+
+const popupTemplate = (popup) => {
   const {
     image,
     name,
     originalName,
-    raiting,
+    rating,
     producer,
     screenwriters,
     cast,
@@ -12,7 +16,8 @@ export const popupTemplate = (popup) => {
     country,
     genre,
     description,
-    ageRating
+    ageRating,
+    comments
   } = popup;
 
   return (`<section class="film-details">
@@ -36,7 +41,7 @@ export const popupTemplate = (popup) => {
 						</div>
 
 						<div class="film-details__rating">
-							<p class="film-details__total-rating">${raiting}</p>
+							<p class="film-details__total-rating">${rating}</p>
 						</div>
 					</div>
 
@@ -96,7 +101,7 @@ export const popupTemplate = (popup) => {
 
 		<div class="form-details__bottom-container">
 			<section class="film-details__comments-wrap">
-				<h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">4</span>
+				<h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${comments}</span>
 				</h3>
 
 				<ul class="film-details__comments-list">
@@ -193,3 +198,27 @@ export const popupTemplate = (popup) => {
 	</form>
 </section>`);
 };
+
+
+export default class Popup {
+  constructor(popup) {
+    this._element = null;
+    this._popup = popup;
+  }
+
+  getTemplate() {
+    return popupTemplate(this._popup);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
