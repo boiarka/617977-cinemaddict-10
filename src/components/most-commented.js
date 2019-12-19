@@ -1,6 +1,4 @@
-import {
-  createElement
-} from "../util.js";
+import AbstractComponent from './abstract-component.js';
 
 const mostCommentedTemplate = () => (
   `<section class="films-list--extra" id="most-commented">
@@ -10,24 +8,8 @@ const mostCommentedTemplate = () => (
 </section>`
 );
 
-export default class TopCommented {
-  constructor() {
-    this._element = null;
-  }
-
+export default class TopCommented extends AbstractComponent {
   getTemplate() {
     return mostCommentedTemplate();
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
