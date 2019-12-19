@@ -1,6 +1,4 @@
-import {
-  createElement
-} from "../util.js";
+import AbstractComponent from './abstract-component.js';
 
 const popupTemplate = (popup) => {
   const {
@@ -200,9 +198,10 @@ const popupTemplate = (popup) => {
 };
 
 
-export default class Popup {
+export default class Popup extends AbstractComponent {
   constructor(popup) {
-    this._element = null;
+    super();
+
     this._popup = popup;
   }
 
@@ -210,15 +209,7 @@ export default class Popup {
     return popupTemplate(this._popup);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
+  setClickHandler(selector, handler) {
+    this.getElement().querySelector(selector).addEventListener(`click`, handler);
   }
 }

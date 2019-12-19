@@ -1,6 +1,4 @@
-import {
-  createElement
-} from "../util.js";
+import AbstractComponent from './abstract-component.js';
 
 const navTemplate = () => (
   `<nav class="main-navigation">
@@ -12,23 +10,8 @@ const navTemplate = () => (
 </nav>`
 );
 
-export default class Navigation {
-  constructor() {
-    this._element = null;
-  }
-
+export default class Navigation extends AbstractComponent {
   getTemplate() {
     return navTemplate();
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
