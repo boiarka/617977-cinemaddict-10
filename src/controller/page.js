@@ -1,46 +1,37 @@
-import FilmCard from '../components/film-card.js';
-import Popup from '../components/popup.js';
+import Film from './movie.js';
 
-import {
-  render,
-  RenderPosition
-} from '../utils/render.js';
+const renderFilms = (films, where, onDataChange) => {
+  return films.map((film) => {
+    const filmController = new Film(where, onDataChange);
+    filmController.render(film);
 
-
-const renderFilm = (film, where) => {
-  const filmElement = new FilmCard(film);
-  const popupElement = new Popup(film);
-
-  filmElement.setClickHandler(`.film-card__poster`, () => {
-    render(document.body, popupElement, RenderPosition.BEFOREEND);
+    return filmController;
   });
-  filmElement.setClickHandler(`.film-card__title`, () => {
-    render(document.body, popupElement, RenderPosition.BEFOREEND);
-  });
-  filmElement.setClickHandler(`.film-card__comments`, () => {
-    render(document.body, popupElement, RenderPosition.BEFOREEND);
-  });
-
-  popupElement.setClickHandler(`.film-details__close-btn`, () => {
-    popupElement.getElement().remove();
-  });
-
-  render(where, filmElement, RenderPosition.BEFOREEND);
 };
+
 
 export default class PageController {
   constructor(container) {
     this._container = container;
+    this._films = [];
 
-    this._filmComponent = new FilmCard();
-    this._popupComponent = new Popup();
+    this._onDataChange = this._onDataChange.bind(this);
   }
   render(films, countStart, countEnd) {
-    const container = this._container;
+    this._films = films;
 
-    films.slice(countStart, countEnd).forEach((item) => {
-      renderFilm(item, container);
-    });
+    renderFilms(this._films.slice(countStart, countEnd), this._container, this._onDataChange);
+  }
 
+  _onDataChange(filmController, oldData, newData) {
+    const index = this._films.findIndex((it) => it === oldData);
+
+    if (index === -1) {
+      return;
+    }
+
+    this._films = [].concat(this._films.slice(0, index), newData, this._films.slice(index + 1));
+
+    filmController.render(this._films[index]);
   }
 }

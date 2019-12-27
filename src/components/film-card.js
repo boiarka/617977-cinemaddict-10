@@ -10,7 +10,10 @@ const filmCardTemplate = (film) => {
     year,
     duration,
     genre,
-    comments
+    comments,
+    isWatchlist,
+    isWatched,
+    isFavorite
   } = film;
 
   return (`<article class="film-card">
@@ -26,11 +29,11 @@ const filmCardTemplate = (film) => {
 <a class="film-card__comments">${comments} comments</a>
 <form class="film-card__controls">
 	<button
-		class="film-card__controls-item button film-card__controls-item--add-to-watchlist film-card__controls-item--active">Add
+		class = "film-card__controls-item button film-card__controls-item--add-to-watchlist ${isWatchlist ? `film-card__controls-item--active` : ``}" > Add
 		to watchlist</button>
-	<button class="film-card__controls-item button film-card__controls-item--mark-as-watched">Mark as
+	<button class="film-card__controls-item button film-card__controls-item--mark-as-watched ${isWatched ? `film-card__controls-item--active` : ``}">Mark as
 		watched</button>
-	<button class="film-card__controls-item button film-card__controls-item--favorite">Mark as favorite</button>
+	<button class="film-card__controls-item button film-card__controls-item--favorite ${isFavorite ? `film-card__controls-item--active` : ``}">Mark as favorite</button>
 </form>
 </article>`);
 };
@@ -49,5 +52,20 @@ export default class FilmCard extends AbstractComponent {
 
   setClickHandler(selector, handler) {
     this.getElement().querySelector(selector).addEventListener(`click`, handler);
+  }
+
+  setWatchlistButtonClickHandler(handler) {
+    this.getElement().querySelector(`.film-card__controls-item--add-to-watchlist`)
+      .addEventListener(`click`, handler);
+  }
+
+  setWatchedButtonClickHandler(handler) {
+    this.getElement().querySelector(`.film-card__controls-item--mark-as-watched`)
+      .addEventListener(`click`, handler);
+  }
+
+  setFavoriteButtonClickHandler(handler) {
+    this.getElement().querySelector(`.film-card__controls-item--favorite`)
+      .addEventListener(`click`, handler);
   }
 }
