@@ -103,7 +103,10 @@ const generateFilm = () => {
     cast: `Элайджа Вуд, Вигго Мортенсен, Шон Эстин, Иэн Маккеллен`,
     dateAndYear: `2002г`,
     country: `США`,
-    ageRating: `16+`
+    ageRating: `16+`,
+    isWatchlist: false,
+    isWatched: false,
+    isFavorite: false
   };
 };
 
