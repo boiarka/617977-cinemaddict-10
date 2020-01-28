@@ -1,12 +1,10 @@
 const FILM_COUNT = 25;
-const FILM_COUNT_START = 5;
 
 import FilmSection from './components/film-section.js';
-import TopRated from './components/top-rated.js';
-import TopCommented from './components/most-commented.js';
+// import TopRated from './components/top-rated.js';
+// import TopCommented from './components/most-commented.js';
 import UserProfile from './components/profile.js';
 import Sorting from './components/sort.js';
-import LoadMore from './components/load-more.js';
 
 import PageController from './controller/page.js';
 import FilterController from './controller/filter.js';
@@ -22,7 +20,6 @@ import {
 
 import {
   render,
-  remove,
   getRandomIntegerNumber,
   RenderPosition
 } from "./utils/render.js";

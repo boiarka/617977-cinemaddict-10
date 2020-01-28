@@ -1,27 +1,16 @@
 import LoadMoreComponent from '../components/load-more.js';
 import FilmContainerComponent from '../components/films-container.js';
-
+import NoFilmsComponent from '../components/no-films.js';
 import FilmController from './movie.js';
 
 
 import {
   render,
   remove,
-  replace,
   RenderPosition
 } from '../utils/render.js';
 
 const FILM_COUNT_START = 5;
-
-// const renderFilms = (films, where, onDataChange) => {
-//   return films.map((film) => {
-//     const filmController = new FilmController(where, onDataChange);
-//     filmController.render(film);
-
-//     return filmController;
-//   });
-// };
-
 
 const renderFilms = (filmListElement, movies, onDataChange, onViewChange) => {
   return movies.map((task) => {
@@ -40,7 +29,7 @@ export default class PageController {
     this._movies = [];
     this._showedMovieControllers = [];
     this._onDataChange = this._onDataChange.bind(this);
-    // this._onViewChange = this._onViewChange.bind(this);
+
     this._onFilterChange = this._onFilterChange.bind(this);
 
     this._moviesModel.setFilterChangeHandler(this._onFilterChange);
@@ -53,16 +42,20 @@ export default class PageController {
   }
   render() {
     const container = this._container.getElement();
-    const movies = this._moviesModel.getMovies();
+    this._movies = this._moviesModel.getMoviesAll();
 
     render(container, this._filmContainerComponent, RenderPosition.BEFOREEND);
-
     this._moviesListElement = this._filmContainerComponent.getElement();
 
-    const newMovies = renderFilms(this._moviesListElement, movies.slice(0, this._showingMoviesCount), this._onDataChange, this._onViewChange);
-    this._showedMovieControllers = this._showedMovieControllers.concat(newMovies);
+    if (this._movies.length === 0) {
+      const noFilmsComponent = new NoFilmsComponent();
+      render(this._moviesListElement, noFilmsComponent, RenderPosition.BEFOREEND);
+    } else {
+      const newMovies = renderFilms(this._moviesListElement, this._movies.slice(0, this._showingMoviesCount), this._onDataChange, this._onViewChange);
+      this._showedMovieControllers = this._showedMovieControllers.concat(newMovies);
 
-    this._renderLoadMoreButton();
+      this._renderLoadMoreButton();
+    }
   }
 
   _removeMovies() {
