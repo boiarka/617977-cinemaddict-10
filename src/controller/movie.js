@@ -36,34 +36,6 @@ export default class MovieController {
     });
 
 
-    // this._popup.setClickHandler(`.film-details__close-btn`, () => {
-    //   this._popup.getElement().remove();
-    // });
-
-    // this._popup.setWatchlistButtonClickHandler((evt) => {
-    //   evt.preventDefault();
-    //   this._onDataChange(this, film, Object.assign({}, film, {
-    //     isWatchlist: !film.isWatchlist,
-    //   }));
-    // });
-
-
-    // this._popup.setWatchedButtonClickHandler((evt) => {
-    //   evt.preventDefault();
-    //   this._onDataChange(this, film, Object.assign({}, film, {
-    //     isWatched: !film.isWatched,
-    //   }));
-    // });
-
-
-    // this._popup.setFavoriteButtonClickHandler((evt) => {
-    //   evt.preventDefault();
-    //   this._onDataChange(this, film, Object.assign({}, film, {
-    //     isFavorite: !film.isFavorite,
-    //   }));
-    // });
-
-
     this._filmCard.setWatchlistButtonClickHandler((evt) => {
       evt.preventDefault();
       this._onDataChange(this, film, Object.assign({}, film, {
