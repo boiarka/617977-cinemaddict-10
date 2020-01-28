@@ -3,6 +3,13 @@ export const RenderPosition = {
   BEFOREEND: `beforeend`
 };
 
+export const FilterType = {
+  ALL: `all-movies`,
+  WATCHLIST: `watchlist`,
+  HISTORY: `history`,
+  FAVORITES: `favorites`
+};
+
 export const createElement = (template) => {
   const newElement = document.createElement(`div`);
   newElement.innerHTML = template;

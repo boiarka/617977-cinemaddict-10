@@ -88,6 +88,7 @@ const getRandomDescriptionArray = (array) => {
 
 const generateFilm = () => {
   return {
+    id: null,
     name: getRandomArrayItem(filmNames),
     image: getRandomArrayItem(posterImageNames),
     description: getRandomDescriptionArray(filmDescriptions),
@@ -104,16 +105,21 @@ const generateFilm = () => {
     dateAndYear: `2002г`,
     country: `США`,
     ageRating: `16+`,
-    isWatchlist: false,
-    isWatched: false,
-    isFavorite: false
+    isWatchlist: Math.random() > 0.5,
+    isWatched: Math.random() > 0.5,
+    isFavorite: Math.random() > 0.5
   };
 };
 
+
 const generateFilms = (count) => {
-  return new Array(count)
+  const films = new Array(count)
     .fill(``)
     .map(generateFilm);
+  films.forEach((item, index) => {
+    item.id = index;
+  });
+  return films;
 };
 
 
