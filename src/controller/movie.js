@@ -4,7 +4,6 @@ import FilmCard from '../components/film-card.js';
 import {
   render,
   replace,
-  remove,
   RenderPosition
 } from '../utils/render.js';
 

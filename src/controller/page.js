@@ -7,7 +7,6 @@ import FilmController from './movie.js';
 import {
   render,
   remove,
-  replace,
   RenderPosition
 } from '../utils/render.js';
 
