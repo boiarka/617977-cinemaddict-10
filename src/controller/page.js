@@ -30,7 +30,9 @@ export default class PageController {
     this._movies = [];
     this._showedMovieControllers = [];
     this._onDataChange = this._onDataChange.bind(this);
+
     // this._onViewChange = this._onViewChange.bind(this);
+
     this._onFilterChange = this._onFilterChange.bind(this);
 
     this._moviesModel.setFilterChangeHandler(this._onFilterChange);
