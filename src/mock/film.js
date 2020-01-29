@@ -107,7 +107,7 @@ const generateFilm = () => {
     ageRating: `16+`,
     isWatchlist: Math.random() > 0.5,
     isWatched: Math.random() > 0.5,
-    isFavorite: Math.random() > 0.5
+    isFavorite: Math.random() > 0.5,
   };
 };
 

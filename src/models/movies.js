@@ -3,7 +3,8 @@ import {
 } from '../util.js';
 
 import {
-  getMoviesByFilter
+  getMoviesByFilter,
+  getMoviesBySort
 } from '../utils/filter.js';
 
 export default class Movies {
@@ -11,12 +12,19 @@ export default class Movies {
     this._movies = [];
 
     this._activeFilterType = FilterType.ALL;
+    this._activeSortType = `Default`;
 
+    this._sortChangeHandlers = [];
     this._filterChangeHandlers = [];
   }
 
   getMovies() {
-    return getMoviesByFilter(this._movies, this._activeFilterType);
+    const movies = getMoviesByFilter(this._movies, this._activeFilterType);
+    return this.getSortedMovies(movies);
+  }
+
+  getSortedMovies(movies) {
+    return getMoviesBySort(movies, this._activeSortType);
   }
 
   getMoviesAll() {
@@ -30,6 +38,11 @@ export default class Movies {
   setFilter(filterType) {
     this._activeFilterType = filterType;
     this._filterChangeHandlers.forEach((handler) => handler());
+  }
+
+  setSort(sortType) {
+    this._activeSortType = sortType;
+    this._sortChangeHandlers.forEach((handler) => handler());
   }
 
   removeTask(id) {
@@ -60,5 +73,9 @@ export default class Movies {
 
   setFilterChangeHandler(handler) {
     this._filterChangeHandlers.push(handler);
+  }
+
+  setSortClickHandler(handler) {
+    this._sortChangeHandlers.push(handler);
   }
 }

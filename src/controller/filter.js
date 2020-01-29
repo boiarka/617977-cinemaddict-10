@@ -23,7 +23,6 @@ export default class FilterController {
   }
 
   render() {
-    const container = this._container;
     const allMovies = this._moviesModel.getMovies();
     const filters = Object.values(FilterType).map((filterType) => {
       return {
@@ -41,7 +40,7 @@ export default class FilterController {
     if (oldComponent) {
       replace(this._filterComponent, oldComponent);
     } else {
-      render(container, this._filterComponent, RenderPosition.BEFOREEND);
+      render(this._container, this._filterComponent, RenderPosition.BEFOREEND);
     }
 
   }

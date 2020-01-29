@@ -4,10 +4,11 @@ import FilmSection from './components/film-section.js';
 // import TopRated from './components/top-rated.js';
 // import TopCommented from './components/most-commented.js';
 import UserProfile from './components/profile.js';
-import Sorting from './components/sort.js';
+
 
 import PageController from './controller/page.js';
 import FilterController from './controller/filter.js';
+import SortController from './controller/sort.js';
 
 import MoviesModel from './models/movies.js';
 
@@ -37,8 +38,8 @@ moviesModel.setMovies(allFilms);
 const filterController = new FilterController(mainElement, moviesModel);
 filterController.render();
 
-render(mainElement, new Sorting(), RenderPosition.BEFOREEND);
-
+const sortController = new SortController(mainElement, moviesModel);
+sortController.render();
 
 const filmSectionComponent = new FilmSection();
 render(mainElement, filmSectionComponent, RenderPosition.BEFOREEND);
