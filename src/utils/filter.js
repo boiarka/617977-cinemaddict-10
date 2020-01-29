@@ -33,3 +33,15 @@ export const getMoviesByFilter = (movies, filterType) => {
   }
   return movies;
 };
+
+
+export const getMoviesBySort = (movies, sortType) => {
+  switch (sortType) {
+    case `Rating`:
+      return movies.slice().sort((a, b) => b.rating - a.rating);
+    case `Date`:
+      return movies.slice().sort((a, b) => Date.parse(b.year) - Date.parse(a.year));
+  }
+
+  return movies;
+};
