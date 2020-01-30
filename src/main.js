@@ -1,10 +1,9 @@
-const FILM_COUNT = 25;
+import API from './api.js';
 
 import FilmSection from './components/film-section.js';
 // import TopRated from './components/top-rated.js';
 // import TopCommented from './components/most-commented.js';
-import UserProfile from './components/profile.js';
-
+// import UserProfile from './components/profile.js';
 
 import PageController from './controller/page.js';
 import FilterController from './controller/filter.js';
@@ -12,46 +11,51 @@ import SortController from './controller/sort.js';
 
 import MoviesModel from './models/movies.js';
 
-import {
-  generateFilms
-} from './mock/film.js';
-import {
-  getUserRank
-} from './mock/user.js';
 
 import {
   render,
-  getRandomIntegerNumber,
   RenderPosition
 } from "./utils/render.js";
+
+const AUTHORIZATION = `Basic dXNlckBwYXNzd29yZAo=`;
+const END_POINT = `https://htmlacademy-es-10.appspot.com/cinemaddict`;
+
+const api = new API(END_POINT, AUTHORIZATION);
+const moviesModel = new MoviesModel();
+
 
 const headerElement = document.querySelector(`.header`);
 const mainElement = document.querySelector(`.main`);
 
-const userRankNum = getRandomIntegerNumber(0, 30);
-render(headerElement, new UserProfile(getUserRank(userRankNum)), RenderPosition.BEFOREEND);
+// const userRankNum = getRandomIntegerNumber(0, 30);
+// render(headerElement, new UserProfile(getUserRank(userRankNum)), RenderPosition.BEFOREEND);
 
-const allFilms = generateFilms(FILM_COUNT);
-const moviesModel = new MoviesModel();
-moviesModel.setMovies(allFilms);
 
 const filterController = new FilterController(mainElement, moviesModel);
-filterController.render();
+
 
 const sortController = new SortController(mainElement, moviesModel);
-sortController.render();
+
 
 const filmSectionComponent = new FilmSection();
-render(mainElement, filmSectionComponent, RenderPosition.BEFOREEND);
 
 
-const pageController = new PageController(filmSectionComponent, moviesModel);
-pageController.render();
 
+api.getMovies()
+  .then((movies) => {
+    moviesModel.setMovies(movies);
 
+    filterController.render();
+    sortController.render();
+    render(mainElement, filmSectionComponent, RenderPosition.BEFOREEND);
+
+    const pageController = new PageController(filmSectionComponent, moviesModel);
+    pageController.render();
+  });
+
+// const filmsElement = document.querySelector(`.films`);
 // render(filmsElement, new TopRated(), RenderPosition.BEFOREEND);
 // render(filmsElement, new TopCommented(), RenderPosition.BEFOREEND);
-
 
 // const topRatedElement = mainElement.querySelector(`#top-rated`);
 // const topRatedContainerElement = topRatedElement.querySelector(`.films-list__container`);

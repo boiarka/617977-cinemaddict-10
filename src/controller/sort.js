@@ -23,8 +23,15 @@ export default class SortController {
     this._sortComponent.setSortClickHandler(this._onSortChange);
   }
 
-  _onSortChange(sortType) {
+  _onSortChange(sortType, currentSort) {
     this._moviesModel.setSort(sortType);
     this._activeSortType = sortType;
+    this._changeActiveSort(currentSort);
+  }
+
+  _changeActiveSort(newActiveFilter) {
+    const oldActiveFilter = this._sortComponent.getElement().querySelector(`.sort__button--active`);
+    oldActiveFilter.classList.remove(`sort__button--active`);
+    newActiveFilter.classList.add(`sort__button--active`);
   }
 }

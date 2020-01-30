@@ -16,6 +16,7 @@ export default class Movies {
 
     this._sortChangeHandlers = [];
     this._filterChangeHandlers = [];
+    this._dataChangeHandlers = [];
   }
 
   getMovies() {
@@ -33,6 +34,7 @@ export default class Movies {
 
   setMovies(movies) {
     this._movies = Array.from(movies);
+    this._callHandlers(this._dataChangeHandlers);
   }
 
   setFilter(filterType) {
@@ -68,6 +70,7 @@ export default class Movies {
 
     this._movies = [].concat(this._movies.slice(0, index), movie, this._movies.slice(index + 1));
 
+    this._callHandlers(this._dataChangeHandlers);
     return true;
   }
 
@@ -77,5 +80,9 @@ export default class Movies {
 
   setSortClickHandler(handler) {
     this._sortChangeHandlers.push(handler);
+  }
+
+  _callHandlers(handlers) {
+    handlers.forEach((handler) => handler());
   }
 }

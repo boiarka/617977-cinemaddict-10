@@ -45,8 +45,15 @@ export default class FilterController {
 
   }
 
-  _onFilterChange(filterType) {
+  _onFilterChange(filterType, currentFilter) {
     this._moviesModel.setFilter(filterType);
     this._activeFilterType = filterType;
+    this._changeActiveFilter(currentFilter);
+  }
+
+  _changeActiveFilter(newActiveFilter) {
+    const oldActiveFilter = this._filterComponent.getElement().querySelector(`.main-navigation__item--active`);
+    oldActiveFilter.classList.remove(`main-navigation__item--active`);
+    newActiveFilter.classList.add(`main-navigation__item--active`);
   }
 }

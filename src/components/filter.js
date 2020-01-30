@@ -2,6 +2,13 @@ import AbstractComponent from './abstract-component.js';
 
 const FILTER_ID_PREFIX = `filter__`;
 
+const FilterNames = {
+  all: `All movies`,
+  watchlist: `Watchlist`,
+  history: `History`,
+  favorites: `Favorites`,
+};
+
 const getFilterNameById = (id) => {
   return id.substring(FILTER_ID_PREFIX.length);
 };
@@ -14,8 +21,8 @@ const createFilterMarkup = (filter) => {
   } = filter;
 
   return (
-    `<a id="filter__${name}" class="main-navigation__item ${checked ? `main-navigation__item--active` : ``}">
-				${(name !== `All movies`) ? `<span class="main-navigation__item-count">${count}</span>` : ``}  ${name} </a>`
+    `<a href="#" id="filter__${name}" class="main-navigation__item ${checked ? `main-navigation__item--active` : ``}">
+				${(name !== `All movies`) ? `<span class="main-navigation__item-count">${count}</span>` : ``}  ${FilterNames[filter.name]} </a>`
   );
 };
 
@@ -41,9 +48,12 @@ export default class Filters extends AbstractComponent {
   }
 
   setFilterChangeHandler(handler) {
-    this.getElement().addEventListener(`click`, (evt) => {
-      const filterName = getFilterNameById(evt.target.id);
-      handler(filterName);
+    const filtersName = this.getElement().querySelectorAll(`.main-navigation__item`);
+    filtersName.forEach((filter) => {
+      filter.addEventListener(`click`, (evt) => {
+        const filterName = getFilterNameById(evt.target.id);
+        handler(filterName, filter);
+      });
     });
   }
 }

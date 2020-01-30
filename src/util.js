@@ -4,7 +4,7 @@ export const RenderPosition = {
 };
 
 export const FilterType = {
-  ALL: `all-movies`,
+  ALL: `all`,
   WATCHLIST: `watchlist`,
   HISTORY: `history`,
   FAVORITES: `favorites`

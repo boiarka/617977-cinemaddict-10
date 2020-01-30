@@ -20,7 +20,6 @@ export default class Sorting extends AbstractComponent {
     sortType.forEach((item) => {
       item.addEventListener(`click`, () => {
         const itemData = item.dataset.sort;
-        console.log(itemData);
         if (activeSortType !== itemData) {
           activeSortType = itemData;
           handler(itemData, item);

@@ -1,3 +1,9 @@
+import moment from "moment";
+
+export const convertReleaseDate = (date) => {
+  return moment(date).format(`MM/DD/YYYY`);
+};
+
 import {
   FilterType
 } from '../util.js';
@@ -7,15 +13,15 @@ export const getAllMovies = (movies) => {
 };
 
 export const getWatchlistMovies = (movies) => {
-  return movies.filter((movie) => movie.isWatchlist);
+  return movies.filter((movie) => movie.watchList);
 };
 
 export const getWatchedMovies = (movies) => {
-  return movies.filter((movie) => movie.isWatched);
+  return movies.filter((movie) => movie.alreadyWatched);
 };
 
 export const getFavoriteMovies = (movies) => {
-  return movies.filter((movie) => movie.isFavorite);
+  return movies.filter((movie) => movie.favorite);
 };
 
 
@@ -38,9 +44,9 @@ export const getMoviesByFilter = (movies, filterType) => {
 export const getMoviesBySort = (movies, sortType) => {
   switch (sortType) {
     case `Rating`:
-      return movies.slice().sort((a, b) => b.rating - a.rating);
+      return movies.slice().sort((a, b) => b.totalRating - a.totalRating);
     case `Date`:
-      return movies.slice().sort((a, b) => Date.parse(b.year) - Date.parse(a.year));
+      return movies.slice().sort((a, b) => Date.parse(b.release.date) - Date.parse(a.release.date));
   }
 
   return movies;

@@ -1,26 +1,30 @@
 import AbstractSmartComponent from './abstract-smart-component.js';
 
+import {
+  convertReleaseDate
+} from '../utils/filter.js';
+
 const popupTemplate = (popup) => {
   const {
-    image,
-    name,
-    originalName,
-    rating,
-    userRate,
-    producer,
-    screenwriters,
-    cast,
-    dateAndYear,
-    duration,
-    country,
-    genre,
+    title,
     description,
+    poster,
+    runtime,
+    totalRating,
+    alternativeTitle,
+    director,
+    writers,
+    actors,
     ageRating,
     comments,
-    isWatchlist,
-    isWatched,
-    isFavorite
+    watchList,
+    alreadyWatched,
+    favorite
   } = popup;
+
+  const date = convertReleaseDate(popup.release.date);
+  const genre = popup.genre;
+
 
   return (`<section class="film-details">
 	<form class="film-details__inner" action="" method="get">
@@ -30,7 +34,7 @@ const popupTemplate = (popup) => {
 			</div>
 			<div class="film-details__info-wrap">
 				<div class="film-details__poster">
-					<img class="film-details__poster-img" src="./images/posters/${image}" alt="">
+					<img class="film-details__poster-img" src="${poster}" alt="">
 
 					<p class="film-details__age">${ageRating}</p>
 				</div>
@@ -38,45 +42,45 @@ const popupTemplate = (popup) => {
 				<div class="film-details__info">
 					<div class="film-details__info-head">
 						<div class="film-details__title-wrap">
-							<h3 class="film-details__title">${name}</h3>
-							<p class="film-details__title-original">${originalName}</p>
+							<h3 class="film-details__title">${title}</h3>
+							<p class="film-details__title-original">${alternativeTitle}</p>
 						</div>
 
 						<div class="film-details__rating">
-							<p class="film-details__total-rating">${rating}</p>
-							${isWatched ? `<p class="film-details__user-rating">${userRate}</p>` : ``}
+							<p class="film-details__total-rating">${totalRating}</p>
+							${watchList ? `<p class="film-details__user-rating">${totalRating}</p>` : ``}
 						</div>
 					</div>
 
 					<table class="film-details__table">
 						<tr class="film-details__row">
 							<td class="film-details__term">Director</td>
-							<td class="film-details__cell">${producer}</td>
+							<td class="film-details__cell">${director}</td>
 						</tr>
 						<tr class="film-details__row">
 							<td class="film-details__term">Writers</td>
-							<td class="film-details__cell">${screenwriters}</td>
+							<td class="film-details__cell">${writers}</td>
 						</tr>
 						<tr class="film-details__row">
 							<td class="film-details__term">Actors</td>
-							<td class="film-details__cell">${cast}</td>
+							<td class="film-details__cell">${actors}</td>
 						</tr>
 						<tr class="film-details__row">
 							<td class="film-details__term">Release Date</td>
-							<td class="film-details__cell">${dateAndYear}</td>
+							<td class="film-details__cell">${date}</td>
 						</tr>
 						<tr class="film-details__row">
 							<td class="film-details__term">Runtime</td>
-							<td class="film-details__cell">${duration}</td>
+							<td class="film-details__cell">${runtime}</td>
 						</tr>
 						<tr class="film-details__row">
 							<td class="film-details__term">Country</td>
-							<td class="film-details__cell">${country}</td>
+							<td class="film-details__cell">${popup.release.release_country}</td>
 						</tr>
 						<tr class="film-details__row">
-							<td class="film-details__term">Genres</td>
+							<td class="film-details__term">${genre.length === 1 ? `Genre` : `Genres`}</td>
 							<td class="film-details__cell">
-								<span class="film-details__genre">${genre}</span>
+								<span class="film-details__genre">${genre.join(`  `)}</span>
 								</td>
 						</tr>
 					</table>
@@ -87,21 +91,21 @@ const popupTemplate = (popup) => {
 
 			<section class="film-details__controls">
 				<input type="checkbox" class="film-details__control-input visually-hidden" id="watchlist"
-					name="watchlist" ${isWatchlist ? `checked` : ``}>
+					name="watchlist" ${watchList ? `checked` : ``}>
 				<label for="watchlist" class="film-details__control-label film-details__control-label--watchlist">Add to
 					watchlist</label>
 
-				<input type="checkbox" class="film-details__control-input visually-hidden" id="watched" name="watched" ${isWatched ? `checked` : ``}>
+				<input type="checkbox" class="film-details__control-input visually-hidden" id="watched" name="watched" ${alreadyWatched ? `checked` : ``}>
 				<label for="watched" class="film-details__control-label film-details__control-label--watched">Already
 					watched</label>
 
 				<input type="checkbox" class="film-details__control-input visually-hidden" id="favorite"
-					name="favorite" ${isFavorite ? `checked` : ``}>
+					name="favorite" ${favorite ? `checked` : ``}>
 				<label for="favorite" class="film-details__control-label film-details__control-label--favorite">Add to
 					favorites</label>
 			</section>
 		</div>
-${isWatched ? `<div class="form-details__middle-container">
+${alreadyWatched ? `<div class="form-details__middle-container">
       <section class="film-details__user-rating-wrap">
         <div class="film-details__user-rating-controls">
           <button class="film-details__watched-reset" type="button">Undo</button>
@@ -109,7 +113,7 @@ ${isWatched ? `<div class="form-details__middle-container">
 
         <div class="film-details__user-score">
           <div class="film-details__user-rating-poster">
-            <img src="./images/posters/${image}" alt="film-poster" class="film-details__user-rating-img">
+            <img src="${poster}" alt="film-poster" class="film-details__user-rating-img">
           </div>
 
           <section class="film-details__user-rating-inner">
@@ -256,25 +260,25 @@ export default class Popup extends AbstractSmartComponent {
     super();
 
     this._popup = popup;
-    this._isWatchlist = popup.isWatchlist;
-    this._isWatched = popup.isWatched;
-    this._isFavorite = popup.isFavorite;
+    this._isWatchlist = popup.watchList;
+    this._isWatched = popup.alreadyWatched;
+    this._isFavorite = popup.favorite;
+    this._btnCloseClickHandler = null;
 
-    this._subscribeOnEvents();
     this._setRating();
   }
 
-  recoveryListeners() {
-    this._subscribeOnEvents();
-    this._setRating();
+  getTemplate() {
+    return popupTemplate(this._popup);
   }
 
   rerender() {
     super.rerender();
   }
 
-  getTemplate() {
-    return popupTemplate(this._popup);
+  getData() {
+    const form = this.getElement().querySelector(`.film-details__inner`);
+    return new FormData(form);
   }
 
   _setRating() {
@@ -289,29 +293,29 @@ export default class Popup extends AbstractSmartComponent {
     }
   }
 
-  _subscribeOnEvents() {
-    const element = this.getElement();
-
-    element.querySelector(`.film-details__close-btn`).addEventListener(`click`, () => {
-      element.remove();
-    });
-
-    element.querySelector(`#watchlist`).addEventListener(`click`, () => {
-      this._isWatchlist = !this._isWatchlist;
-      this._popup.isWatchlist = this._isWatchlist;
-      this.rerender();
-    });
-
-    element.querySelector(`#watched`).addEventListener(`click`, () => {
-      this._isWatched = !this._isWatched;
-      this._popup.isWatched = this._isWatched;
-      this.rerender();
-    });
-
-    element.querySelector(`#favorite`).addEventListener(`click`, () => {
-      this._isFavorite = !this._isFavorite;
-      this._popup.isFavorite = this._isFavorite;
-      this.rerender();
-    });
+  setPopupCloseHandler(handler) {
+    this.getElement()
+      .querySelector(`.film-details__close-btn`)
+      .addEventListener(`click`, handler);
   }
+
+  setWatchListButtonClickHandler(handler) {
+    this.getElement()
+      .querySelector(`.film-details__control-label--watchlist`)
+      .addEventListener(`click`, handler);
+
+  }
+
+  setWatchedButtonClickHandler(handler) {
+    this.getElement()
+      .querySelector(`.film-details__control-label--watched`)
+      .addEventListener(`click`, handler);
+  }
+
+  setFavoriteButtonClickHandler(handler) {
+    this.getElement()
+      .querySelector(`.film-details__control-label--favorite`)
+      .addEventListener(`click`, handler);
+  }
+
 }

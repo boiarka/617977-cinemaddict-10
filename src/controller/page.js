@@ -31,6 +31,7 @@ export default class PageController {
 
     this._onDataChange = this._onDataChange.bind(this);
     this._onSortChange = this._onSortChange.bind(this);
+    this._onViewChange = this._onViewChange.bind(this);
     this._onFilterChange = this._onFilterChange.bind(this);
 
     this._moviesModel.setSortClickHandler(this._onSortChange);
@@ -48,53 +49,50 @@ export default class PageController {
     this._movies = this._moviesModel.getMoviesAll();
 
     render(container, this._filmContainerComponent, RenderPosition.BEFOREEND);
-    this._moviesListElement = this._filmContainerComponent.getElement();
+    this._moviesListElement = this._filmContainerComponent.getElement().querySelector(`.films-list__container`);
 
     if (this._movies.length === 0) {
       const noFilmsComponent = new NoFilmsComponent();
       render(this._moviesListElement, noFilmsComponent, RenderPosition.BEFOREEND);
     } else {
-      const newMovies = renderFilms(this._moviesListElement, this._movies.slice(0, this._showingMoviesCount), this._onDataChange, this._onViewChange);
-      this._showedMovieControllers = this._showedMovieControllers.concat(newMovies);
 
+      this._renderMovies(this._movies.slice(0, this._showingMoviesCount));
       this._renderLoadMoreButton();
     }
   }
 
   _removeMovies() {
-    this._moviesListElement = this._filmContainerComponent.getElement();
-
-    this._moviesListElement.innerHTML = ``;
+    this._showedMovieControllers.forEach((movieController) => movieController.destroy());
     this._showedMovieControllers = [];
   }
 
   _renderMovies(movies) {
-    const newTasks = renderFilms(this._moviesListElement, movies, this._onDataChange, this._onViewChange);
-    this._showedMovieControllers = this._showedMovieControllers.concat(newTasks);
+    const newMovies = renderFilms(this._moviesListElement, movies, this._onDataChange, this._onViewChange);
+    this._showedMovieControllers = this._showedMovieControllers.concat(newMovies);
+    console.log(this._showedMovieControllers);
     this._showingMoviesCount = this._showedMovieControllers.length;
   }
 
   _renderLoadMoreButton() {
-    if (this._showingMoviesCount >= this._moviesModel.getMovies().length) {
-      return;
+    remove(this._loadMoreButtonComponent);
+
+    if (this._moviesModel.getMovies().length > FILM_COUNT_START) {
+      this._loadMoreButtonComponent = new LoadMoreComponent();
+      const container = this._container.getElement().querySelector(`.films-list`);
+      render(container, this._loadMoreButtonComponent, RenderPosition.BEFOREEND);
+
+      this._loadMoreButtonComponent.setClickHandler(() => {
+        const prevMoviesCount = this._showingMoviesCount;
+        this._showingMoviesCount = this._showingMoviesCount + FILM_COUNT_START;
+
+        this._renderMovies(this._moviesModel.getMovies().slice(prevMoviesCount, this._showingMoviesCount));
+
+        if (this._showingMoviesCount >= this._moviesModel.getMovies().length) {
+          remove(this._loadMoreButtonComponent);
+        }
+      });
     }
 
-    const container = this._container.getElement();
-    render(container, this._loadMoreButtonComponent, RenderPosition.BEFOREEND);
-
-    this._loadMoreButtonComponent.setClickHandler(() => {
-      const prevTasksCount = this._showingMoviesCount;
-      const movies = this._moviesModel.getMovies();
-
-      this._showingMoviesCount = this._showingMoviesCount + FILM_COUNT_START;
-
-      const newTasks = renderFilms(this._moviesListElement, movies.slice(prevTasksCount, this._showingMoviesCount), this._onDataChange, this._onViewChange);
-      this._showedMovieControllers = this._showedMovieControllers.concat(newTasks);
-
-      if (this._showingMoviesCount >= movies.length) {
-        remove(this._loadMoreButtonComponent);
-      }
-    });
   }
 
   _onDataChange(filmController, oldData, newData) {
@@ -115,6 +113,10 @@ export default class PageController {
     this._removeMovies();
     this._renderMovies(this._moviesModel.getMovies().slice(0, FILM_COUNT_START));
     this._renderLoadMoreButton();
+  }
+
+  _onViewChange() {
+    this._showedMovieControllers.forEach((movies) => movies.setDefaultView());
   }
 
 }
